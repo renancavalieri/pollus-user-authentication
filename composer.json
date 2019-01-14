@@ -1,0 +1,31 @@
+{
+    "name": "pollus/user-session-management",
+    "description": "",
+    "keywords": ["php", "user", "session", "login"],
+    "license": "MIT",
+    "authors": 
+    [
+        {
+            "name": "Renan Cavalieri",
+            "email": "renan@tecdicas.com"
+        }
+    ],
+    "type": "library",
+    "require": 
+    {
+        "php": ">=7.2",
+        "pollus/session-wrapper": "^1.0.0"
+    },
+    "require-dev":
+    {
+        "phpunit/phpunit": "^7.0.0",
+        "pollus/fake-session": "^1.0.0"
+    },
+    "autoload": 
+    {
+        "psr-4": 
+        {
+            "Pollus\\UserSessionManagement\\": "src/"
+        }
+    }
+}

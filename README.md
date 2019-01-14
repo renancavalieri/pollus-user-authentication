@@ -1,6 +1,6 @@
 # Pollus User Session Management
 
-This library provides a simple and flexible authentication and session management.
+This library provides a simple and flexible user authentication and session management.
 
 **Setup:**
 
@@ -99,7 +99,7 @@ catch(AuthenticationException $ex)
 {
     // Login is valid but the user is inactive
 }
-```
+``` 
 
 # MIT License
 

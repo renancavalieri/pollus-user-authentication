@@ -1,6 +1,6 @@
 {
     "name": "pollus/user-session-management",
-    "description": "",
+    "description": "A simple and flexible user authentication and session management",
     "keywords": ["php", "user", "session", "login"],
     "license": "MIT",
     "authors": 

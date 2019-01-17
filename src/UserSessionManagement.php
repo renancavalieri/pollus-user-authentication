@@ -15,6 +15,7 @@ use Pollus\UserSessionManagement\Exceptions\UserRepositoryException;
 use Pollus\UserSessionManagement\Exceptions\AuthenticationException;
 use Pollus\UserSessionManagement\Exceptions\SessionException;
 use Pollus\UserSessionManagement\Models\PasswordHasherInterface;
+use Pollus\UserSessionManagement\Models\UserInterface;
 
 class UserSessionManagement
 {   
@@ -48,11 +49,11 @@ class UserSessionManagement
     /**
      * Get the current logged user
      * 
-     * @return User|null - NULL when no one is logged.
+     * @return UserInterface|null - NULL when no one is logged.
      * @throws AuthenticationException - When the user is inactive or not found
      * @throws SessionException - When the session is not started
      */
-    public function getCurrentUser() : ?User
+    public function getCurrentUser() : ?UserInterface
     {
         $user_id = $this->session->getUserLoggedId();
         
@@ -80,10 +81,10 @@ class UserSessionManagement
     /**
      * Sets the current logged user (without any password verification)
      * 
-     * @param User $user
+     * @param UserInterface $user
      * @throws AuthenticationException if the user is inactive
      */
-    public function setCurrentUser(User $user)
+    public function setCurrentUser(UserInterface $user)
     {
         if ($user->isActive() === false)
         {

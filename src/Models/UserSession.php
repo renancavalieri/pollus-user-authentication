@@ -20,8 +20,15 @@ class UserSession implements UserSessionInterface
      */
     protected $session;
     
-    public function __construct(?SessionInterface $session)
+    /**
+     * @var string
+     */
+    protected $key;
+
+
+    public function __construct(?SessionInterface $session, string $key = "user_logged")
     {
+        $this->key = $key;
         if ($session === null)
         {
             $this->session = new Session();
@@ -41,7 +48,7 @@ class UserSession implements UserSessionInterface
         {
            throw new SessionException("Session is not started");
         }
-        $this->session->set("user_logged", $id);
+        $this->session->set($this->key, $id);
     }
 
     /**
@@ -54,7 +61,7 @@ class UserSession implements UserSessionInterface
            throw new SessionException("Session is not started");
         }
         
-        $user_id = $this->session->get("user_logged");
+        $user_id = $this->session->get($this->key);
         
         if ($user_id === null || $user_id === false)
         {

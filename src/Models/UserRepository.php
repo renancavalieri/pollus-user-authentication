@@ -43,7 +43,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function getUserByEmail(string $email): User
+    public function getUserByEmail(string $email): UserInterface
     {
         return $this->query("email", $email);
     }
@@ -51,7 +51,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function getUserById($id): User
+    public function getUserById($id): UserInterface
     {
         return $this->query("id", $id);
     }
@@ -59,7 +59,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function getUserByUsername(string $username): User
+    public function getUserByUsername(string $username): UserInterface
     {
         return $this->query("username", $username);
     }
@@ -69,10 +69,10 @@ class UserRepository implements UserRepositoryInterface
      * 
      * @param string $field - ** This value is not parameterized or escaped **
      * @param mixed $value
-     * @return User
+     * @return UserInterface
      * @throws UserRepositoryException
      */
-    protected function query(string $field, $value) : User
+    protected function query(string $field, $value) : UserInterface
     {
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE {$field} = :field");
         $stmt->bindValue("field", $value);

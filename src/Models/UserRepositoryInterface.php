@@ -9,7 +9,7 @@
 namespace Pollus\UserSessionManagement\Models;
 
 use Pollus\UserSessionManagement\Exceptions\UserRepositoryException;
-use Pollus\UserSessionManagement\Models\User;
+use Pollus\UserSessionManagement\Models\UserInterface;
 
 interface UserRepositoryInterface
 {
@@ -17,26 +17,26 @@ interface UserRepositoryInterface
      * Gets the user by ID
      * 
      * @param int|string $id
-     * @return User
+     * @return UserInterface
      * @throws UserRepositoryException if not found
      */
-    public function getUserById($id) : User;
+    public function getUserById($id) : UserInterface;
     
     /**
      * Gets the user by email
      * 
      * @param string $email
-     * @return User
+     * @return UserInterface
      * @throws UserRepositoryException if not found
      */
-    public function getUserByEmail(string $email) : User;
+    public function getUserByEmail(string $email) : UserInterface;
     
     /**
      * Gets the user by username
      * 
      * @param string $username
-     * @return User
+     * @return UserInterface
      * @throws UserRepositoryException if not found
      */
-    public function getUserByUsername(string $username) : User;
+    public function getUserByUsername(string $username) : UserInterface;
 }

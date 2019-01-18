@@ -11,49 +11,56 @@ class Connection
             "email" => "unique_email@domain.com",
             "username" => "unique_user",
             "password" => "secret_password",
-            "active" => 1
+            "active" => 1,
+            "token" => "123456789123456789",
         ],
         [
             "id" => 2,
             "email" => "another_unique_email@domain.com",
             "username" => "another_unique_user",
             "password" => "another_secret_password",
-            "active" => 1
+            "active" => 1,
+            "token" => "321654987321654897"
         ],
         [
             "id" => 3,
             "email" => "not_unique_email@domain.com",
             "username" => "not_unique_user",
             "password" => "asdfghj",
-            "active" => 1
+            "active" => 1,
+            "token" => null
         ],
         [
             "id" => 4,
             "email" => "not_unique_email@domain.com",
             "username" => "not_unique_user",
             "password" => "asdfghj",
-            "active" => 1
+            "active" => 1,
+            "token" => null
         ],
         [
             "id" => 5,
             "email" => "not_unique_email_active@domain.com",
             "username" => "not_unique_user_active",
             "password" => "asdfghj",
-            "active" => 1
+            "active" => 1,
+            "token" => null
         ],
         [
             "id" => 6,
             "email" => "not_unique_email_active@domain.com",
             "username" => "not_unique_user_active",
             "password" => "qwerty",
-            "active" => 0
+            "active" => 0,
+            "token" => null
         ],
         [
             "id" => 7,
             "email" => "inactive_user@domain.com",
             "username" => "inactive_user",
             "password" => "uioppo",
-            "active" => 0
+            "active" => 0,
+            "token" => null
         ],
     ];
     
@@ -68,6 +75,7 @@ class Connection
               `email` VARCHAR(100) NOT NULL,
               `username` VARCHAR(100) NOT NULL,
               `password_hash` VARCHAR(200) NOT NULL,
+              `token` VARCHAR(200),
               `active` BIT NOT NULL
             );
         ");
@@ -75,11 +83,12 @@ class Connection
         foreach($this->userlist as $u)
         {
             $stmt = $pdo->prepare("INSERT INTO users VALUES "
-                    . "(:id, :email, :username, :password_hash, :active)");
+                    . "(:id, :email, :username, :password_hash, :token, :active)");
             $stmt->bindValue("id", $u["id"]);
             $stmt->bindValue("email", $u["email"]);
             $stmt->bindValue("username", $u["username"]);
             $stmt->bindValue("password_hash", $h->hash($u["password"]));
+            $stmt->bindValue("token", $u["token"]);
             $stmt->bindValue("active", (int) $u["active"]);
             $stmt->execute();
         }

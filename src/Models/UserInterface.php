@@ -66,4 +66,18 @@ interface UserInterface
      * @return bool
      */
     public function isActive() : bool;
+    
+    /**
+     * Gets the user auth token
+     * 
+     * @return string|null
+     */
+    public function getToken() : ?string;
+    
+    /**
+     * Sets the user auth token
+     * 
+     * @param string $token
+     */
+    public function setToken(string $token);
 }

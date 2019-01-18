@@ -27,4 +27,11 @@ interface PasswordHasherInterface
      * @return string
      */
     public function hash(string $password) : string;
+    
+    /**
+     * Generates a random user token
+     * 
+     * @return string
+     */
+    public function token() : string;
 }

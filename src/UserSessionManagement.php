@@ -16,6 +16,7 @@ use Pollus\UserSessionManagement\Exceptions\AuthenticationException;
 use Pollus\UserSessionManagement\Exceptions\SessionException;
 use Pollus\UserSessionManagement\Models\PasswordHasherInterface;
 use Pollus\UserSessionManagement\Models\UserInterface;
+use Pollus\UserSessionManagement\Exceptions\PasswordException;
 
 class UserSessionManagement
 {   
@@ -50,7 +51,8 @@ class UserSessionManagement
      * Get the current logged user
      * 
      * @return UserInterface|null - NULL when no one is logged.
-     * @throws AuthenticationException - When the user is inactive or not found
+     * @throws AuthenticationException - When the user is inactive, not found or 
+     * when there is a token mismatch
      * @throws SessionException - When the session is not started
      */
     public function getCurrentUser() : ?UserInterface
@@ -69,6 +71,11 @@ class UserSessionManagement
             {
                 throw new AuthenticationException("User is inactive");
             }    
+            
+            if ($user->getToken() !== $this->session->getUserLoggedToken())
+            {
+                throw new AuthenticationException("Token mismatch");
+            }
             
             return $user;
         } 
@@ -91,7 +98,7 @@ class UserSessionManagement
             throw new AuthenticationException("User is inactive");
         }
         
-        $this->session->setUserLoggedId($user->getId());
+        $this->session->setUserLoggedId($user->getId(), $user->getToken());
     }
     
     /**
@@ -101,7 +108,7 @@ class UserSessionManagement
      */
     public function logout()
     {
-        $this->session->setUserLoggedId(null);
+        $this->session->setUserLoggedId(null, null);
     }
     
     /**
@@ -186,6 +193,26 @@ class UserSessionManagement
     public function getHasherObject() : PasswordHasherInterface
     {
         return $this->hasher;
+    }
+    
+    /**
+     * Changes the user password and redefines its token
+     * 
+     * @param mixed $user_id
+     * @param string $password
+     * @return boolean
+     */
+    public function changeUserPassword($user_id, string $password)
+    {
+        // Updates hash
+        $hash = $this->hasher->hash($password);
+        $this->repository->updateUserHash($user_id, $hash);
+        
+        // Updates token
+        $new_token = $this->hasher->token();
+        $this->repository->updateUserToken($user_id, $new_token);
+        
+        return true;
     }
     
     /**

@@ -16,9 +16,10 @@ interface UserSessionInterface
      * Set the user logged ID.
      * 
      * @param type $id
+     * @param string|null $token
      * @throws SessionException if session session is not active
      */
-    public function setUserLoggedId($id);
+    public function setUserLoggedId($id, ?string $token);
     
     /**
      * Returns the logged user ID or NULL when none.
@@ -26,4 +27,11 @@ interface UserSessionInterface
      * @throws SessionException if session session is not active
      */
     public function getUserLoggedId();
+    
+    /**
+     * Returns the authentication token from the current user
+     * 
+     * @return string|null
+     */
+    public function getUserLoggedToken() : ?string;
 }

@@ -25,4 +25,13 @@ class PasswordHasher implements PasswordHasherInterface
     {
         return (password_hash($password, PASSWORD_BCRYPT));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function token(): string 
+    {
+        return md5(random_bytes(512));
+    }
+
 }

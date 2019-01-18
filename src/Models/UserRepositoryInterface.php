@@ -39,4 +39,22 @@ interface UserRepositoryInterface
      * @throws UserRepositoryException if not found
      */
     public function getUserByUsername(string $username) : UserInterface;
+        
+    /**
+     * Updates the password hash
+     * 
+     * @param type $user_id
+     * @param string $hash
+     * @return bool
+     */
+    public function updateUserHash($user_id, string $hash) : bool;
+    
+    /**
+     * Updates the user token
+     * 
+     * @param type $user_id
+     * @param string $token
+     * @return bool
+     */
+    public function updateUserToken($user_id, string $token) : bool;
 }

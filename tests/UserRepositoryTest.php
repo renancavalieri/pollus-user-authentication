@@ -50,7 +50,7 @@ class UserRepositoryTest extends TestCase
         $user = $this->repo->getUserByEmail("noemail@noemail.com");
     }
     
-    public function getByUsername()
+    public function testGetByUsername()
     {
         $user = $this->repo->getUserByUsername("unique_user");
         $this->assertSame("unique_email@domain.com", $user->getEmail());
@@ -59,21 +59,38 @@ class UserRepositoryTest extends TestCase
         $this->assertSame("inactive_user@domain.com", $inactive_user->getEmail());
     }
     
-    public function getByUsernameShouldThrowExceptionDuplicated()
+    public function testGetByUsernameShouldThrowExceptionDuplicated()
     {
         $this->expectException(UserRepositoryException::class);
         $user = $this->repo->getUserByUsername("not_unique_user");
     }
     
-    public function getByUsernameShouldThrowExceptionNotFound()
+    public function testGetByUsernameShouldThrowExceptionNotFound()
     {
         $this->expectException(UserRepositoryException::class);
         $user = $this->repo->getUserByUsername("nouser");
     }
     
-    public function getById()
+    public function testGetById()
     {
         $user = $this->repo->getUserById(1);
         $this->assertSame("unique_email@domain.com", $user->getEmail());
+    }
+    
+    public function testUpdateHash()
+    {
+        $hash = password_hash("123456", PASSWORD_BCRYPT);
+        $this->repo->updateUserHash(1, $hash);
+        $user = $this->repo->getUserById(1);
+        $this->assertSame($hash, $user->getPasswordHash());
+    }
+    
+    public function testUpdateToken()
+    {
+        $user = $this->repo->getUserById(1);
+        $old_token = $user->getToken();
+        $this->repo->updateUserToken(1, "qwertyuiop");
+        $user = $this->repo->getUserById(1);
+        $this->assertNotSame($old_token, $user->getToken());
     }
 }

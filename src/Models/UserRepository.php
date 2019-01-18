@@ -63,6 +63,28 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->query("username", $username);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function updateUserHash($user_id, string $hash) : bool
+    {
+        $stmt = $this->pdo->prepare("UPDATE {$this->table} SET password_hash = :password_hash WHERE id = :id");
+        $stmt->bindValue("password_hash", $hash);
+        $stmt->bindValue("id", $user_id);
+        return $stmt->execute();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function updateUserToken($user_id, string $token) : bool
+    {
+        $stmt = $this->pdo->prepare("UPDATE {$this->table} SET token = :token WHERE id = :id");
+        $stmt->bindValue("token", $token);
+        $stmt->bindValue("id", $user_id);
+        return $stmt->execute();
+    }
 
     /**
      * Performs a query on database
@@ -87,4 +109,5 @@ class UserRepository implements UserRepositoryInterface
         
         return $user[0];
     }
+
 }

@@ -24,11 +24,17 @@ class UserSession implements UserSessionInterface
      * @var string
      */
     protected $key;
+    
+    /**
+     * @var string
+     */
+    protected $token_key;
 
 
-    public function __construct(?SessionInterface $session, string $key = "user_logged")
+    public function __construct(?SessionInterface $session, string $key = "user_logged", string $token_key = "token")
     {
         $this->key = $key;
+        $this->token_key = $token_key;
         if ($session === null)
         {
             $this->session = new Session();
@@ -42,13 +48,14 @@ class UserSession implements UserSessionInterface
     /**
      * {@inheritDoc}
      */
-    public function setUserLoggedId($id)
+    public function setUserLoggedId($id, ?string $token = null)
     {
         if ($this->session->status() !== PHP_SESSION_ACTIVE)
         {
            throw new SessionException("Session is not started");
         }
         $this->session->set($this->key, $id);
+        $this->session->set($this->token_key, $token);
     }
 
     /**
@@ -70,4 +77,15 @@ class UserSession implements UserSessionInterface
         return $user_id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getUserLoggedToken(): ?string 
+    {
+        if ($this->getUserLoggedId() === null)
+        {
+            return null;
+        }
+        return $this->session->get($this->token_key);
+    }
 }

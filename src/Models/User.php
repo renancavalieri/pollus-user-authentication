@@ -18,6 +18,7 @@ class User implements UserInterface
     protected $username;
     protected $password_hash;
     protected $active = true;
+    protected $token;
 
     /**
      * {@inheritDoc}
@@ -89,6 +90,22 @@ class User implements UserInterface
     public function setActive(bool $active)
     {
         $this->active = $active;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getToken(): ?string 
+    {
+        return $this->token;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function setToken(string $token) 
+    {
+        $this->token = $token;
     }
 
 }

@@ -164,4 +164,19 @@ class UserSessionManagementTest extends TestCase
         $this->assertSame(false, $result);
         $this->assertSame(null, $manager->getCurrentUser());
     }
+    
+    public function testChangePasswordToken()
+    {
+        $this->expectException(AuthenticationException::class);
+        $manager = $this->getManagerMockObject();
+        $this->assertSame(null, $manager->getCurrentUser());
+        $result = $manager->loginUserByEmail("unique_email@domain.com", "secret_password");
+        $this->assertSame(true, $result);
+        $repo = $manager->getRepositoryObject();
+        $this->assertSame($repo->getUserById(1)->getId(), $manager->getCurrentUser()->getId());
+        $manager->changeUserPassword(1, "changed_secret");
+        $manager->getCurrentUser()->getId();
+        $result = $manager->loginUserByEmail("unique_email@domain.com", "changed_secret");
+        $this->assertSame(true, $result);
+    }
 }
